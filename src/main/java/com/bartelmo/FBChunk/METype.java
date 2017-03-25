@@ -1,10 +1,5 @@
-package FBlock;
+package com.bartelmo.FBChunk;
 
-import com.sun.xml.internal.ws.encoding.MtomCodec;
-import sun.misc.FloatingDecimal;
-
-import java.nio.charset.Charset;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -105,33 +100,52 @@ public class METype {
     }
     public static List<Integer> getIntListFromData(byte[] data)
             throws UnsupportedEncodingException {
-        return (List<Integer>)getTypeDefData(Data.Int32, data);
+        return (List<Integer>)getTypeDefData(Data.ListInteger, data);
     }
 
-    public static byte[] getBytes(METype metype, Object val)
-    throws UnsupportedEncodingException {
-        List<Byte> buffer = new ArrayList<Byte>();
-        buffer.addAll(Arrays.asList(Utils.IntToBytes(metype.getId())));
+    public static Byte[] getBytes(METype metype, Object val) throws UnsupportedEncodingException {
+        List<Byte> data = null;
 
         switch(metype.getTypeDef()) {
             case String:
-                ((String)val).getBytes("US-ASCII");
+                data = Utils.getByteObj(((String)val)
+                        .getBytes("US-ASCII"));
+                break;
             case Int32:
-                Integer.toString((Integer)val).getBytes("US-ASCII");
+                data = Utils.getByteObj(Integer.toString((Integer)val)
+                        .getBytes("US-ASCII"));
+                break;
             case Int64:
-                Long.toString((Long)val).getBytes("US-ASCII");
+                data = Utils.getByteObj(Long.toString((Long)val)
+                        .getBytes("US-ASCII"));
+                break;
             case Float:
-                Float.toString((Float)val).getBytes("US-ASCII");
+                data = Utils.getByteObj(Float.toString((Float)val)
+                        .getBytes("US-ASCII"));
+                break;
             case Boolean:
-                return getStringFromData(data).toLowerCase().equals("true");
+                data = Utils.getByteObj(Boolean.toString((Boolean)val)
+                        .toLowerCase().getBytes("US-ASCII"));
+                break;
             case ListInteger:
-                String[] integers = getStringFromData(data).split(" ");
-                List<Integer> toReturn = new ArrayList<Integer>();
-                for(int i = 0; i < integers.length; i++) {
-                    toReturn.add(Integer.getInteger(integers[i]));
+                List<Integer> ints = (List<Integer>)val;
+                data = new ArrayList<Byte>(ints.size() * 4 + (ints.size()));
+                for(Integer integer : ints) {
+                    data.addAll(Utils.getByteObj(Integer.toString(integer)
+                            .getBytes("US-ASCII")));
+                    data.add((byte)0xe0); //character code for space
                 }
-
-                return toReturn;
+                data.remove(data.size() - 1);
+                break;
         }
+        List<Byte> buffer = new ArrayList<Byte>();
+        //ID for ME Type
+        buffer.addAll(Utils.getBytes(metype.getId()));
+        //Length of data
+        buffer.addAll(Utils.getBytes((short)data.size()));
+        //data
+        buffer.addAll(data);
+
+        return buffer.toArray(new Byte[buffer.size()]);
     }
 }

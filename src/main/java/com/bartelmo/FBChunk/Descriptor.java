@@ -1,4 +1,4 @@
-package FBlock;
+package com.bartelmo.FBChunk;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -10,10 +10,13 @@ import java.util.zip.DataFormatException;
 public class Descriptor {
     int fbHeaderLength;
     int dataLength;
-    byte[] unknown11Bytes = new byte[11];
+
     public Descriptor(DataInputStream dataStream)
-            throws IOException, DataFormatException {
+            throws IOException {
         //Check FBCHUCNKS header
+        if (dataStream.readLong() != Constants.FBCHUNKS) {
+            throw new IOException("Invalid File magic for FBChunks file");
+        }
         //Check version
         if(dataStream.readShort() != 1) {
             throw new IOException("Incorrect Version of FBCHUNKS descriptor");
@@ -25,8 +28,5 @@ public class Descriptor {
         if(dataStream.readShort() != 1) {
             throw new IOException("Invalid FBHeader chunk");
         }
-        //we're gonna hold onto this
-        dataStream.read(unknown11Bytes, 0, 11);
-
     }
 }
