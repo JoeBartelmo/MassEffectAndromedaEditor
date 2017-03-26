@@ -30,12 +30,12 @@ public class Constants {
         types.put(0x346eaf1, new METype()
                 .withId(0x346eaf1)
                 .withName("Unknown")
-                .withTypeDef(METype.Data.String));//appears to represent letters "101"
+                .withTypeDef(METype.Data.Int32));//appears to represent letters "101"
 
         types.put(0x4d86fb47, new METype()
                 .withId(0x4d86fb47)
-                .withName("Unknown <Nullable>")
-                .withTypeDef(METype.Data.String));//appears to be nullin my files
+                .withName("Unknown <semicolon seperated list>")
+                .withTypeDef(METype.Data.ListIntegerSemicolon));//appears to be nullin my files
 
         types.put(0xc8e7f2d2, new METype()
                 .withId(0xc8e7f2d2)
@@ -55,32 +55,32 @@ public class Constants {
         types.put(0x12a98e23, new METype()
                 .withId(0x12a98e23)
                 .withName("Profile ID")
-                .withTypeDef(METype.Data.String));
+                .withTypeDef(METype.Data.Int64));
 
         types.put(0x574d2d1e, new METype()
                 .withId(0x574d2d1e)
-                .withName("Game Level")
+                .withName("Game Level Asset")
                 .withTypeDef(METype.Data.String));
 
         types.put(0xf5339720, new METype()
                 .withId(0xf5339720)
                 .withName("Pathfinder Level")
-                .withTypeDef(METype.Data.String));
+                .withTypeDef(METype.Data.Int32));
 
         types.put(0x3e8c1126, new METype()
                 .withId(0x3e8c1126)
                 .withName("Unknown <Boolean>")
-                .withTypeDef(METype.Data.String));
+                .withTypeDef(METype.Data.Boolean));
 
         types.put(0xcae59484, new METype()
                 .withId(0xcae59484)
                 .withName("Unknown <Boolean>")
-                .withTypeDef(METype.Data.String));
+                .withTypeDef(METype.Data.Boolean));
 
         types.put(0x53de4f39, new METype()
                 .withId(0x53de4f39)
                 .withName("Unknown <Series of numbers seperated by space>")
-                .withTypeDef(METype.Data.String));
+                .withTypeDef(METype.Data.ListInteger));
 
         types.put(0xc163a5e4, new METype()
                 .withId(0xc163a5e4)
@@ -90,27 +90,27 @@ public class Constants {
         types.put(0x31b2a7de, new METype()
                 .withId(0x31b2a7de)
                 .withName("Unknown")
-                .withTypeDef(METype.Data.String));
+                .withTypeDef(METype.Data.Int32));
 
         types.put(0x8587ff46, new METype()
                 .withId(0x8587ff46)
                 .withName("Unknown")
-                .withTypeDef(METype.Data.String));
+                .withTypeDef(METype.Data.Int32));
 
         types.put(0x17d7b226, new METype()
                 .withId(0x17d7b226)
                 .withName("Unknown")
-                .withTypeDef(METype.Data.String));
+                .withTypeDef(METype.Data.Int32));//possibly may need new type for 0 or 1
 
         types.put(0x30e1a056, new METype()
                 .withId(0x30e1a056)
                 .withName("Unknown")
-                .withTypeDef(METype.Data.String));
+                .withTypeDef(METype.Data.ListInteger));
 
         types.put(0xa07dc1ee, new METype()
                 .withId(0xa07dc1ee)
                 .withName("Unknown")
-                .withTypeDef(METype.Data.String));
+                .withTypeDef(METype.Data.Int32));//0 or 1
 
         HEADER_TYPES = Collections.unmodifiableMap(types);
     }

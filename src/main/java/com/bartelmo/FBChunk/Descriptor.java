@@ -11,6 +11,14 @@ public class Descriptor {
     int fbHeaderLength;
     int dataLength;
 
+    public int getFbHeaderLength() {
+        return fbHeaderLength;
+    }
+
+    public int getDataLength() {
+        return dataLength;
+    }
+
     public Descriptor(DataInputStream dataStream)
             throws IOException {
         //Check FBCHUCNKS header
@@ -24,7 +32,7 @@ public class Descriptor {
 
         fbHeaderLength = dataStream.readInt();
         dataLength = dataStream.readInt(); //total length after header is done
-        dataStream.readInt();//CRC32 of whole Header (preceeded with 0x12345678)
+        dataStream.readInt();//CRC32 of whole FbHeader (preceeded with 0x12345678)
         if(dataStream.readShort() != 1) {
             throw new IOException("Invalid FBHeader chunk");
         }

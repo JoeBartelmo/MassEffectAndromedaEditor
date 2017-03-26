@@ -15,6 +15,7 @@ public class METype {
         Int64,
         Float,
         ListInteger,
+        ListIntegerSemicolon,//i love when 2 developers want to use a different delimiter >.>
         Boolean
     }
     private Data typeDef;
@@ -71,10 +72,13 @@ public class METype {
             case Boolean:
                 return getStringFromData(data).toLowerCase().equals("true");
             case ListInteger:
-                String[] integers = getStringFromData(data).split(" ");
+            case ListIntegerSemicolon:
+                //we convert them all to one type so i don't have to rewrite code
+                String[] integers = getStringFromData(data)
+                        .replace(" ", ";").split(";");
                 List<Integer> toReturn = new ArrayList<Integer>();
-                for(int i = 0; i < integers.length; i++) {
-                    toReturn.add(Integer.getInteger(integers[i]));
+                for(String str : integers) {
+                    toReturn.add(Integer.getInteger(str));
                 }
 
                 return toReturn;
@@ -128,14 +132,10 @@ public class METype {
                         .toLowerCase().getBytes("US-ASCII"));
                 break;
             case ListInteger:
-                List<Integer> ints = (List<Integer>)val;
-                data = new ArrayList<Byte>(ints.size() * 4 + (ints.size()));
-                for(Integer integer : ints) {
-                    data.addAll(Utils.getByteObj(Integer.toString(integer)
-                            .getBytes("US-ASCII")));
-                    data.add((byte)0xe0); //character code for space
-                }
-                data.remove(data.size() - 1);
+                data = Utils.getBytes((List<Integer>)val, (byte)0x2e);
+                break;
+            case ListIntegerSemicolon:
+                data = Utils.getBytes((List<Integer>)val, (byte)0x3b);
                 break;
         }
         List<Byte> buffer = new ArrayList<Byte>();
